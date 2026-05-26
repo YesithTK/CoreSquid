@@ -222,5 +222,4 @@ public class SquidCommand implements CommandExecutor, TabCompleter {
         for (String s : lista) if (s.toLowerCase().startsWith(prefijo.toLowerCase())) r.add(s);
         return r;
     }
-  }
-            
+}
