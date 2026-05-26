@@ -46,7 +46,8 @@ public class SoundUtils {
         player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
     }
 
-    public static void playToAll(Iterable<Player> players, String soundKey) {
+    import java.util.Collection;
+    public static void playToAll(Collection<? extends Player> players, String sound) {
         for (Player p : players) play(p, soundKey);
     }
 }
