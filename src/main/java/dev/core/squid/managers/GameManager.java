@@ -269,7 +269,7 @@ public class GameManager {
             String nombreGanador = ganador.getName();
 
             // Anunciar ganador a todos
-            for (Player p : Bukkit.getOnlinePlayers()) {
+            for (Player p : new ArrayList<>(Bukkit.getOnlinePlayers())) {
                 p.sendTitle(
                         ColorUtils.color(plugin.getConfig().getString("anuncios.ganador-titulo", "&6&lGANADOR")),
                         ColorUtils.color(plugin.getConfig().getString("anuncios.ganador-subtitulo", "&e{jugador}").replace("{jugador}", nombreGanador)),
