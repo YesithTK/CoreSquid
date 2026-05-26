@@ -124,5 +124,4 @@ public class GameListener implements Listener {
             tj.jalar(p);
         }
     }
-  }
-      
+}
