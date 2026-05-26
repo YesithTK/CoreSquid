@@ -1,0 +1,86 @@
+# ============================================
+#           CoreSquid v1.0.0
+# ============================================
+
+# Jugadores minimo y maximo por partida
+min-jugadores: 2
+max-jugadores: 16
+
+# Tiempo de espera en lobby (segundos)
+tiempo-lobby: 30
+
+# Tiempo entre minijuegos (segundos)
+tiempo-entre-juegos: 10
+
+# Activar resource pack automatico
+resourcepack-activado: true
+resourcepack-url: ""
+resourcepack-hash: ""
+
+# Activar estadisticas
+estadisticas-activado: true
+
+# Vault
+vault-activado: true
+
+# Sonidos personalizados activados
+sonidos-activados: true
+
+# Mundo donde se generan las arenas
+mundo-arenas: "world"
+
+# Recompensas al ganar
+recompensas:
+  dinero: 1000
+  comandos:
+    - "give {jugador} diamond 5"
+  items: []
+
+# Minijuegos activados (puedes desactivar los que no quieras)
+minijuegos:
+  luz-roja-luz-verde: true
+  puente-cristal: true
+  canicas: true
+  tira-jala: true
+  dalgona: true
+  sillas-musicales: true
+  laberinto: true
+  bomba-caliente: true
+  memoria-bloques: true
+  carrera-obstaculos: true
+  plataformas-caen: true
+  adivina-numero: true
+  escondite: true
+  rey-colina: true
+  ruleta-rusa: true
+  domino-bloques: true
+
+# Mensajes
+mensajes:
+  prefijo: "&8[&cCore&4Squid&8] &r"
+  sin-permiso: "&cNo tienes permiso."
+  unido-lobby: "&aUniste al lobby. &7Jugadores: &e{actual}&7/&e{max}"
+  salido-lobby: "&7Saliste del lobby."
+  lobby-lleno: "&cEl lobby esta lleno."
+  partida-en-curso: "&cYa hay una partida en curso."
+  no-hay-partida: "&cNo hay ninguna partida activa."
+  ya-en-partida: "&cYa estas en una partida."
+  iniciando-en: "&eIniciando en &6{segundos} &esegundos... &7({actual}/{min})"
+  partida-iniciada: "&aLa partida ha comenzado!"
+  eliminado: "&cFuiste eliminado. Ahora eres espectador."
+  ganador: "&6&l{jugador} &e&lha ganado Squid Game!"
+  stats-titulo: "&6&lTus Estadisticas"
+  stats-victorias: "&7Victorias: &e{victorias}"
+  stats-muertes: "&7Eliminaciones: &e{muertes}"
+  stats-partidas: "&7Partidas jugadas: &e{partidas}"
+
+# Anuncios de minijuegos
+anuncios:
+  juego-titulo: "&c&l{juego}"
+  juego-subtitulo: "&7Preparate..."
+  cuenta-regresiva: "&e{segundos}"
+  eliminado-titulo: "&c&lELIMINADO"
+  eliminado-subtitulo: "&7Mejor suerte la proxima vez"
+  ganador-titulo: "&6&lGANADOR"
+  ganador-subtitulo: "&e{jugador}"
+  
