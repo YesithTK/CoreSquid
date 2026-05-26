@@ -4,6 +4,8 @@ import dev.core.squid.CoreSquid;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
+import java.util.Collection;
+
 public class SoundUtils {
 
     /**
@@ -12,6 +14,7 @@ public class SoundUtils {
      */
     public static void play(Player player, String soundKey) {
         if (!CoreSquid.getInstancia().getConfig().getBoolean("sonidos-activados", true)) return;
+
         try {
             // Intentar reproducir sonido personalizado del resource pack
             player.playSound(player.getLocation(), soundKey, 1.0f, 1.0f);
@@ -43,11 +46,13 @@ public class SoundUtils {
             case "coresquid.inicio_juego"     -> Sound.ENTITY_ENDER_DRAGON_GROWL;
             default                           -> Sound.BLOCK_NOTE_BLOCK_PLING;
         };
+
         player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
     }
 
-    import java.util.Collection;
     public static void playToAll(Collection<? extends Player> players, String sound) {
-        for (Player p : players) play(p, soundKey);
+        for (Player p : players) {
+            play(p, sound);
+        }
     }
 }
