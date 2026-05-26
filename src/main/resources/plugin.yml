@@ -23,4 +23,3 @@ permissions:
   coresquid.stats:
     description: Ver estadisticas
     default: true
-    
