@@ -1,0 +1,26 @@
+name: CoreSquid
+version: '1.0.0'
+main: dev.core.squid.CoreSquid
+api-version: '1.21'
+authors: [ CoreDev ]
+description: Squid Game minigame plugin
+softdepend: [ Vault ]
+
+commands:
+  squid:
+    description: Comando principal de CoreSquid
+    aliases: [ sg, coresquid ]
+    usage: /squid <ayuda|unirse|salir|iniciar|detener|stats|recargar>
+    permission: coresquid.use
+
+permissions:
+  coresquid.admin:
+    description: Acceso total a CoreSquid
+    default: op
+  coresquid.use:
+    description: Puede unirse a partidas
+    default: true
+  coresquid.stats:
+    description: Ver estadisticas
+    default: true
+    
