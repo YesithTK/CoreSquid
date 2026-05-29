@@ -5,6 +5,7 @@ import dev.core.squid.games.*;
 import dev.core.squid.managers.GameManager;
 import dev.core.squid.model.GameState;
 import dev.core.squid.utils.ColorUtils;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,10 +14,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.EquipmentSlot;
 
 public class GameListener implements Listener {
 
@@ -28,100 +27,119 @@ public class GameListener implements Listener {
         this.gm = plugin.getGameManager();
     }
 
-    // ── Desconexion ─────────────────────────────────────────────────
+    // ── Wand: left click = pos1, right click = pos2 ──────────────
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event) {
+        if (event.getHand() != EquipmentSlot.HAND) return;
+        Player player = event.getPlayer();
+        if (player.getInventory().getItemInMainHand().getType() != Material.GOLDEN_AXE) return;
+        if (!player.hasPermission("coresquid.admin")) return;
+
+        if (event.getAction().name().contains("LEFT_CLICK")) {
+            if (event.getClickedBlock() == null) return;
+            event.setCancelled(true);
+            plugin.getArenaManager().setPos1(player.getUniqueId(), event.getClickedBlock().getLocation());
+            player.sendMessage(plugin.getLang().get("wand-pos1",
+                    "x", String.valueOf(event.getClickedBlock().getX()),
+                    "y", String.valueOf(event.getClickedBlock().getY()),
+                    "z", String.valueOf(event.getClickedBlock().getZ())));
+        } else if (event.getAction().name().contains("RIGHT_CLICK")) {
+            if (event.getClickedBlock() == null) return;
+            event.setCancelled(true);
+            plugin.getArenaManager().setPos2(player.getUniqueId(), event.getClickedBlock().getLocation());
+            player.sendMessage(plugin.getLang().get("wand-pos2",
+                    "x", String.valueOf(event.getClickedBlock().getX()),
+                    "y", String.valueOf(event.getClickedBlock().getY()),
+                    "z", String.valueOf(event.getClickedBlock().getZ())));
+        }
+    }
+
+    // ── Player quit ───────────────────────────────────────────────
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player p = event.getPlayer();
-        if (gm.estaEnLobby(p)) gm.salirDelLobby(p);
-        if (gm.estaEnPartida(p)) gm.eliminarJugador(p);
-        if (gm.getJuegoActual() != null) gm.getJuegoActual().onPlayerQuit(p);
-    }
-
-    // ── Daño en partida ─────────────────────────────────────────────
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onDamage(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player p)) return;
-        if (!gm.estaEnPartida(p)) return;
-
-        // Solo permitir daño en ciertos juegos
-        if (gm.getEstado() == GameState.EN_JUEGO) {
-            // Dejar que los juegos manejen el daño
-            if (gm.getJuegoActual() instanceof Escondite) return;
-            // En la mayoria de juegos no hay daño PvP
-            event.setDamage(0);
-        } else {
-            event.setCancelled(true);
+        if (gm.isInLobby(p)) gm.leaveLobby(p);
+        else if (gm.isInGame(p)) {
+            gm.eliminatePlayer(p);
+            if (gm.getCurrentGame() != null) gm.getCurrentGame().onQuit(p);
+            gm.restorePlayer(p);
         }
     }
 
-    // ── PvP - pasar bomba / golpear en escondite ────────────────────
+    // ── No hunger in game/lobby ───────────────────────────────────
     @EventHandler
-    public void onPvP(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof Player atacante)) return;
-        if (!(event.getEntity() instanceof Player victima)) return;
-        if (!gm.estaEnPartida(atacante)) return;
-
-        MiniGame juego = gm.getJuegoActual();
-        if (juego instanceof BombaCaliente bc) {
-            event.setCancelled(true);
-            bc.pasarBomba(atacante, victima);
-        } else if (juego instanceof Escondite esc) {
-            esc.onGolpear(atacante, victima);
-            event.setCancelled(true);
-        } else {
-            event.setCancelled(true);
-        }
-    }
-
-    // ── Hambre ──────────────────────────────────────────────────────
-    @EventHandler
-    public void onHambre(FoodLevelChangeEvent event) {
+    public void onHunger(FoodLevelChangeEvent event) {
         if (!(event.getEntity() instanceof Player p)) return;
-        if (gm.estaEnPartida(p) || gm.estaEnLobby(p)) {
-            event.setCancelled(true);
-        }
+        if (gm.isInGame(p) || gm.isInLobby(p)) event.setCancelled(true);
     }
 
-    // ── Drop de items ────────────────────────────────────────────────
+    // ── No item drop in game/lobby ────────────────────────────────
     @EventHandler
     public void onDrop(PlayerDropItemEvent event) {
         Player p = event.getPlayer();
-        if (gm.estaEnPartida(p) || gm.estaEnLobby(p)) {
+        if (gm.isInGame(p) || gm.isInLobby(p)) event.setCancelled(true);
+    }
+
+    // ── Damage handling ───────────────────────────────────────────
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onDamage(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player p)) return;
+        if (gm.isInLobby(p)) { event.setCancelled(true); return; }
+        if (!gm.isInGame(p)) return;
+        // Most games don't use damage - cancel by default unless specific game
+        MiniGame game = gm.getCurrentGame();
+        if (game instanceof HideSeek || game instanceof TugOfWar || game instanceof KingHill) return;
+        event.setDamage(0);
+    }
+
+    // ── PvP: pass bomb / hit in hide seek ─────────────────────────
+    @EventHandler
+    public void onPvP(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof Player attacker)) return;
+        if (!(event.getEntity() instanceof Player victim)) return;
+        if (!gm.isInGame(attacker)) return;
+
+        MiniGame game = gm.getCurrentGame();
+        event.setCancelled(true);
+
+        if (game instanceof HotPotato hp) {
+            hp.passBomb(attacker, victim);
+        } else if (game instanceof HideSeek hs) {
+            hs.onHit(attacker, victim);
             event.setCancelled(true);
+        } else if (game instanceof TugOfWar tw) {
+            tw.pull(attacker);
         }
     }
 
-    // ── Romper bloques - Dalgona ─────────────────────────────────────
-    @EventHandler
-    public void onBreakBlock(BlockBreakEvent event) {
+    // ── Block break: Dalgona ─────────────────────────────────────
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBreak(BlockBreakEvent event) {
         Player p = event.getPlayer();
-        if (!gm.estaEnPartida(p)) return;
-
-        MiniGame juego = gm.getJuegoActual();
-        if (juego instanceof Dalgona dalgona) {
+        if (!gm.isInGame(p)) return;
+        MiniGame game = gm.getCurrentGame();
+        if (game instanceof Dalgona dalgona) {
             event.setCancelled(true);
-            dalgona.onRomperBloque(p, event.getBlock().getLocation());
+            dalgona.onBreakBlock(p, event.getBlock().getLocation());
         } else {
             event.setCancelled(true);
         }
     }
 
-    // ── Movimiento - Luz Roja Luz Verde ─────────────────────────────
-    @EventHandler
-    public void onMove(PlayerMoveEvent event) {
-        // Solo verificar posicion, no cancelar (LuzRojaLuzVerde lo maneja internamente)
+    // ── Block place: cancel in most games ─────────────────────────
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlace(org.bukkit.event.block.BlockPlaceEvent event) {
+        Player p = event.getPlayer();
+        if (gm.isInGame(p) || gm.isInLobby(p)) event.setCancelled(true);
     }
 
-    // ── Interaccion con entidad - Tira y Jala ────────────────────────
+    // ── Resource pack ─────────────────────────────────────────────
     @EventHandler
-    public void onInteractEntity(PlayerInteractEntityEvent event) {
+    public void onJoin(PlayerJoinEvent event) {
         Player p = event.getPlayer();
-        if (!gm.estaEnPartida(p)) return;
-
-        MiniGame juego = gm.getJuegoActual();
-        if (juego instanceof TiraJala tj) {
-            event.setCancelled(true);
-            tj.jalar(p);
+        if (plugin.getConfig().getBoolean("resourcepack.enabled", false)) {
+            String url = plugin.getConfig().getString("resourcepack.url", "");
+            if (!url.isEmpty()) p.setResourcePack(url);
         }
     }
 }
