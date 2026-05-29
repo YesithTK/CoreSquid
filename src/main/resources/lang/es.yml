@@ -1,0 +1,137 @@
+# ╔══════════════════════════════════════╗
+# ║   CoreSquid - Idioma: Español        ║
+# ╚══════════════════════════════════════╝
+
+prefix: "&8[&c&lCS&8] &r"
+
+# ─── General ──────────────────────────────────────────────────────
+no-permission: "&cNo tienes permiso para hacer eso."
+player-only: "&cEste comando es solo para jugadores."
+player-not-found: "&cJugador no encontrado: &e{player}"
+reloaded: "&aConfiguración recargada correctamente."
+
+# ─── Join / Leave ─────────────────────────────────────────────────
+joined-lobby: "&aUniste al lobby! &7({current}/{max} jugadores)"
+left-lobby: "&7Saliste del lobby."
+already-in-game: "&cYa estás en una partida."
+already-in-lobby: "&cYa estás en el lobby."
+lobby-full: "&cEl lobby está lleno. &7(Máx: {max})"
+game-in-progress: "&cHay una partida en curso. Espera a que termine."
+not-in-lobby: "&cNo estás en el lobby."
+not-in-game: "&cNo estás en una partida."
+
+# ─── Countdown ────────────────────────────────────────────────────
+countdown-waiting: "&eEsperando jugadores... &7({current}/{min})"
+countdown-starting: "&eIniciando en &6{seconds} &esegundos..."
+countdown-cancelled: "&cConteo cancelado. No hay suficientes jugadores."
+countdown-title: "&e{seconds}"
+countdown-subtitle: "&7segundos..."
+teleporting-title: "&a&lTELEPORTANDO"
+teleporting-subtitle: "&7Preparando la arena..."
+
+# ─── Game ─────────────────────────────────────────────────────────
+game-started: "&a¡La partida ha comenzado! Buena suerte."
+game-stopped: "&7La partida fue detenida por un administrador."
+game-next: "&7Siguiente juego: &e{game}"
+eliminated: "&cFuiste eliminado. &7Ahora eres espectador."
+winner: "&6&l{player} &e&lha ganado Squid Game! &7¡Felicitaciones!"
+no-winner: "&7La partida terminó sin ganador."
+spectating: "&7Estás viendo la partida como espectador."
+
+# ─── Arenas ───────────────────────────────────────────────────────
+wand-received: "&aRecibiste el hacha de selección. &7Clic izq: Pos1 | Clic der: Pos2"
+wand-pos1: "&aPosición 1 seleccionada: &e{x}, {y}, {z}"
+wand-pos2: "&aPosición 2 seleccionada: &e{x}, {y}, {z}"
+arena-created: "&aArena &e{game} &acreada correctamente."
+arena-deleted: "&aArena eliminada."
+arena-not-found: "&cArena no encontrada para: &e{game}"
+arena-exists: "&cYa existe una arena para &e{game}&c."
+arena-select-first: "&cSelecciona primero las dos posiciones con el hacha."
+arena-list: "&6Arenas configuradas: &e{list}"
+arena-list-empty: "&cNo hay arenas configuradas."
+lobby-set: "&aLobby configurado en tu posición actual."
+spawn-set: "&aSpawn del juego configurado en tu posición actual."
+
+# ─── Stats ────────────────────────────────────────────────────────
+stats-title: "&6&lEstadísticas de &e{player}"
+stats-wins: "&7Victorias: &e{wins}"
+stats-losses: "&7Eliminaciones: &e{losses}"
+stats-games: "&7Partidas jugadas: &e{games}"
+stats-winrate: "&7Ratio de victoria: &e{rate}%"
+
+# ─── Minigame announcements ───────────────────────────────────────
+game-announce-title: "&c&l{game}"
+game-announce-subtitle: "&7{description}"
+game-eliminated-title: "&c&lELIMINADO"
+game-eliminated-subtitle: "&7Mejor suerte la próxima vez"
+game-winner-title: "&6&lGANADOR"
+game-winner-subtitle: "&e{player} &7ha ganado!"
+game-time-left: "&e{seconds}s &7restantes"
+
+# ─── Minigame descriptions ────────────────────────────────────────
+game-desc-red-light-green-light: "¡No te muevas cuando sea luz roja!"
+game-desc-glass-bridge: "¡Elige el panel de cristal correcto para cruzar!"
+game-desc-marbles: "¡Adivina si el número de canicas es par o impar!"
+game-desc-tug-of-war: "¡Jala la cuerda para empujar al equipo rival!"
+game-desc-dalgona: "¡Rompe la figura de caramelo sin romper el borde!"
+game-desc-musical-chairs: "¡Siéntate en una silla cuando pare la música!"
+game-desc-maze: "¡Llega a la meta antes que los demás!"
+game-desc-hot-potato: "¡Pasa la bomba antes de que explote!"
+game-desc-memory-blocks: "¡Repite la secuencia de bloques de colores!"
+game-desc-obstacle-course: "¡Llega al final superando los obstáculos!"
+game-desc-falling-platforms: "¡No caigas! Las plataformas desaparecen."
+game-desc-guess-number: "¡Adivina el número secreto entre 1 y 100!"
+game-desc-hide-seek: "¡Escóndete del buscador o encuéntralos a todos!"
+game-desc-king-hill: "¡Mantente en la cima el mayor tiempo posible!"
+game-desc-russian-roulette: "¡Bebe la poción... puede que sea la mala!"
+
+# ─── Minigame in-game messages ────────────────────────────────────
+rlgl-green: "LUZ VERDE"
+rlgl-green-sub: "¡Corre hacia la meta!"
+rlgl-red: "LUZ ROJA"
+rlgl-red-sub: "¡No te muevas!"
+rlgl-reached: "¡LLEGASTE!"
+rlgl-reached-sub: "Espera a los demás..."
+
+dalgona-explain: "&eTu figura es de &6{shape}&e. Rompe solo los bloques &6dorados&e. Si rompes el &cborde&e, serás eliminado."
+dalgona-correct: "¡COMPLETADO!"
+dalgona-correct-sub: "¡Completaste la figura!"
+dalgona-fail: "¡ELIMINADO!"
+dalgona-fail-sub: "Rompiste el borde"
+
+marbles-explain: "&7Tienes &e{marbles} &7canicas. Escribe &e/squid bet <par|impar> <cantidad>"
+marbles-win: "&a+{amount} canicas! Total: &e{total}"
+marbles-lose: "&c-{amount} canicas. Total: &e{total}"
+marbles-correct: "¡CORRECTO!"
+marbles-wrong: "INCORRECTO"
+marbles-no-marbles: "&cTe quedaste sin canicas."
+
+hot-potato-got: "¡TIENES LA BOMBA!"
+hot-potato-got-sub: "¡Haz clic en otro jugador para pasarla!"
+hot-potato-passed: "&aPasaste la bomba a &e{player}"
+hot-potato-exploded: "&cLa bomba explotó en &e{player}&c."
+
+guess-explain: "&7Adivina el número. Escribe &e/squid guess <número>"
+guess-higher: "&7El número es &amayor &7| Intentos: &e{tries}/{max}"
+guess-lower: "&7El número es &cmenor &7| Intentos: &e{tries}/{max}"
+guess-correct: "¡CORRECTO!"
+guess-correct-sub: "¡Era el {number}!"
+guess-failed: "&cAgotaste tus intentos. Era el &e{number}"
+
+roulette-your-turn: "TU TURNO"
+roulette-your-turn-sub: "Escribe /squid drink"
+roulette-others-turn: "Turno de {player}"
+roulette-good: "¡POCIÓN BUENA!"
+roulette-good-sub: "¡Salvado!"
+roulette-bad: "¡POCIÓN MALA!"
+roulette-bad-sub: "Eliminado..."
+
+hide-seek-hider: "¡ESCÓNDETE!"
+hide-seek-hider-sub: "Tienes {seconds} segundos"
+hide-seek-seeker: "ERES EL BUSCADOR"
+hide-seek-seeker-sub: "Espera {seconds} segundos"
+hide-seek-go: "¡A BUSCAR!"
+hide-seek-go-sub: "Encuentra a todos"
+hide-seek-found: "&e{player} &7fue encontrado!"
+
+tug-progress: "&9Equipo A: {a} &8| &cEquipo B: {b}"
