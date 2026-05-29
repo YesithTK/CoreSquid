@@ -1,73 +1,62 @@
 package dev.core.squid.managers;
 
 import dev.core.squid.CoreSquid;
-import dev.core.squid.model.PlayerData;
+import dev.core.squid.model.PlayerStats;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.io.*;
+import java.util.*;
 
 public class StatsManager {
 
     private final CoreSquid plugin;
-    private final Map<UUID, PlayerData> datos = new HashMap<>();
+    private final Map<UUID, PlayerStats> cache = new HashMap<>();
     private File statsFile;
     private FileConfiguration statsConfig;
 
     public StatsManager(CoreSquid plugin) {
         this.plugin = plugin;
-        cargar();
+        load();
     }
 
-    public PlayerData getData(UUID uuid, String nombre) {
-        return datos.computeIfAbsent(uuid, k -> {
-            PlayerData pd = new PlayerData(uuid, nombre);
-            cargarJugador(pd);
-            return pd;
+    public PlayerStats getStats(UUID uuid, String name) {
+        return cache.computeIfAbsent(uuid, k -> {
+            PlayerStats ps = new PlayerStats(uuid, name);
+            loadPlayer(ps);
+            return ps;
         });
     }
 
-    public PlayerData getData(UUID uuid) {
-        return datos.get(uuid);
+    public PlayerStats getStats(UUID uuid) {
+        return cache.get(uuid);
     }
 
-    private void cargarJugador(PlayerData pd) {
-        if (statsConfig == null) return;
-        String path = "stats." + pd.getUuid().toString();
+    private void loadPlayer(PlayerStats ps) {
+        String path = "stats." + ps.getUuid();
         if (!statsConfig.contains(path)) return;
-        pd.setVictorias(statsConfig.getInt(path + ".victorias", 0));
-        pd.setEliminaciones(statsConfig.getInt(path + ".eliminaciones", 0));
-        pd.setPartidas(statsConfig.getInt(path + ".partidas", 0));
+        ps.setWins(statsConfig.getInt(path + ".wins", 0));
+        ps.setEliminations(statsConfig.getInt(path + ".eliminations", 0));
+        ps.setGamesPlayed(statsConfig.getInt(path + ".games", 0));
     }
 
-    public void guardar() {
-        if (statsFile == null) return;
+    public void save() {
         statsConfig = new YamlConfiguration();
-        for (PlayerData pd : datos.values()) {
-            String path = "stats." + pd.getUuid().toString();
-            statsConfig.set(path + ".nombre", pd.getNombre());
-            statsConfig.set(path + ".victorias", pd.getVictorias());
-            statsConfig.set(path + ".eliminaciones", pd.getEliminaciones());
-            statsConfig.set(path + ".partidas", pd.getPartidas());
+        for (PlayerStats ps : cache.values()) {
+            String path = "stats." + ps.getUuid();
+            statsConfig.set(path + ".name", ps.getName());
+            statsConfig.set(path + ".wins", ps.getWins());
+            statsConfig.set(path + ".eliminations", ps.getEliminations());
+            statsConfig.set(path + ".games", ps.getGamesPlayed());
         }
-        try {
-            statsConfig.save(statsFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        try { statsConfig.save(statsFile); } catch (IOException e) { e.printStackTrace(); }
     }
 
-    public void cargar() {
+    public void load() {
         statsFile = new File(plugin.getDataFolder(), "stats.yml");
-        if (!statsFile.exists()) {
-            try { statsFile.createNewFile(); } catch (IOException e) { e.printStackTrace(); }
-        }
+        if (!statsFile.exists()) try { statsFile.createNewFile(); } catch (IOException e) { e.printStackTrace(); }
         statsConfig = YamlConfiguration.loadConfiguration(statsFile);
     }
 
-    public Map<UUID, PlayerData> getTodos() { return datos; }
+    public Map<UUID, PlayerStats> getAll() { return cache; }
 }
