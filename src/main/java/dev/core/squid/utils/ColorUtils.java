@@ -1,8 +1,8 @@
 package dev.core.squid.utils;
 
 public class ColorUtils {
-    public static String color(String texto) {
-        if (texto == null) return "";
-        return texto.replace("&", "\u00a7");
+    public static String color(String text) {
+        if (text == null) return "";
+        return text.replace("&", "\u00a7");
     }
 }
