@@ -1,85 +1,177 @@
-# ============================================
-#           CoreSquid v1.0.0
-# ============================================
+# ╔══════════════════════════════════════════════╗
+# ║           CoreSquid v1.0.0                   ║
+# ║     Professional Squid Game Plugin           ║
+# ╚══════════════════════════════════════════════╝
 
-# Jugadores minimo y maximo por partida
-min-jugadores: 2
-max-jugadores: 16
+# Language: es (Spanish) or en (English)
+language: es
 
-# Tiempo de espera en lobby (segundos)
-tiempo-lobby: 30
+# Server IP shown in scoreboard
+server-ip: "play.colombiacraft.fun"
 
-# Tiempo entre minijuegos (segundos)
-tiempo-entre-juegos: 10
+# ─── GAME SETTINGS ────────────────────────────────────────────────
+game:
+  min-players: 2
+  max-players: 16
+  lobby-countdown: 30        # seconds to wait in lobby before starting
+  between-games-delay: 10    # seconds between minigames
+  starting-titles: true      # show 3,2,1 countdown titles
+  announce-games: true       # announce each minigame with title
 
-# Activar resource pack automatico
-resourcepack-activado: true
-resourcepack-url: ""
-resourcepack-hash: ""
+# ─── SCOREBOARD ───────────────────────────────────────────────────
+scoreboard:
+  enabled: true
+  # Show scoreboard to ALL players (even outside game)
+  always-visible: true
+  update-interval: 20        # ticks between scoreboard updates (20 = 1s)
+  title: "&c&lSQUID GAME"
 
-# Activar estadisticas
-estadisticas-activado: true
+  # Lines shown when player is NOT in a game
+  global-lines:
+    - "&7"
+    - "&7Estado: &e{state}"
+    - "&7"
+    - "&7Jugadores en juego: &e{playing}"
+    - "&7En lobby: &e{lobby}"
+    - "&7"
+    - "&6{server-ip}"
+    - "&7"
 
-# Vault
-vault-activado: true
+  # Lines shown when player IS in lobby
+  lobby-lines:
+    - "&7"
+    - "&7Estado: &aEn Lobby"
+    - "&7"
+    - "&7Jugadores: &e{players}/{max}"
+    - "&7Iniciando en: &e{countdown}s"
+    - "&7"
+    - "&6{server-ip}"
+    - "&7"
 
-# Sonidos personalizados activados
-sonidos-activados: true
+  # Lines shown during a game
+  game-lines:
+    - "&7"
+    - "&7Juego: &e{game}"
+    - "&7Tiempo: &e{time}"
+    - "&7"
+    - "&7Jugadores: &e{alive}"
+    - "&7Eliminados: &c{eliminated}"
+    - "&7"
+    - "&6{server-ip}"
+    - "&7"
 
-# Mundo donde se generan las arenas
-mundo-arenas: "world"
+# ─── SOUNDS ───────────────────────────────────────────────────────
+sounds:
+  enabled: true
+  use-custom-sounds: false   # set true after installing resource pack
 
-# Recompensas al ganar
-recompensas:
-  dinero: 1000
-  comandos:
-    - "give {jugador} diamond 5"
+# ─── REWARDS ──────────────────────────────────────────────────────
+rewards:
+  enabled: true
+  money: 500
+  commands:
+    - "give {player} diamond 3"
   items: []
 
-# Minijuegos activados (puedes desactivar los que no quieras)
-minijuegos:
-  luz-roja-luz-verde: true
-  puente-cristal: true
-  canicas: true
-  tira-jala: true
+# ─── RESOURCE PACK ────────────────────────────────────────────────
+resourcepack:
+  enabled: false
+  url: ""
+  hash: ""
+  required: false            # force players to use resource pack
+
+# ─── ARENA GENERATION ─────────────────────────────────────────────
+arenas:
+  # World where arenas are built
+  world: "world"
+  # Base coordinates for arena generation (change if conflicts)
+  origin-x: 10000
+  origin-y: 100
+  origin-z: 10000
+  # Use custom arena (set with /squid arena create) instead of auto-gen
+  use-custom: false
+
+# ─── MINIGAMES ENABLED ────────────────────────────────────────────
+minigames:
+  red-light-green-light: true
+  glass-bridge: true
+  marbles: true
+  tug-of-war: true
   dalgona: true
-  sillas-musicales: true
-  laberinto: true
-  bomba-caliente: true
-  memoria-bloques: true
-  carrera-obstaculos: true
-  plataformas-caen: true
-  adivina-numero: true
-  escondite: true
-  rey-colina: true
-  ruleta-rusa: true
-  domino-bloques: true
+  musical-chairs: true
+  maze: true
+  hot-potato: true
+  memory-blocks: true
+  obstacle-course: true
+  falling-platforms: true
+  guess-number: true
+  hide-seek: true
+  king-hill: true
+  russian-roulette: true
 
-# Mensajes
-mensajes:
-  prefijo: "&8[&cCore&4Squid&8] &r"
-  sin-permiso: "&cNo tienes permiso."
-  unido-lobby: "&aUniste al lobby. &7Jugadores: &e{actual}&7/&e{max}"
-  salido-lobby: "&7Saliste del lobby."
-  lobby-lleno: "&cEl lobby esta lleno."
-  partida-en-curso: "&cYa hay una partida en curso."
-  no-hay-partida: "&cNo hay ninguna partida activa."
-  ya-en-partida: "&cYa estas en una partida."
-  iniciando-en: "&eIniciando en &6{segundos} &esegundos... &7({actual}/{min})"
-  partida-iniciada: "&aLa partida ha comenzado!"
-  eliminado: "&cFuiste eliminado. Ahora eres espectador."
-  ganador: "&6&l{jugador} &e&lha ganado Squid Game!"
-  stats-titulo: "&6&lTus Estadisticas"
-  stats-victorias: "&7Victorias: &e{victorias}"
-  stats-muertes: "&7Eliminaciones: &e{muertes}"
-  stats-partidas: "&7Partidas jugadas: &e{partidas}"
+# ─── MINIGAME SETTINGS ────────────────────────────────────────────
+minigame-settings:
+  red-light-green-light:
+    duration: 90
+    move-threshold: 0.15     # max movement allowed in red light
 
-# Anuncios de minijuegos
-anuncios:
-  juego-titulo: "&c&l{juego}"
-  juego-subtitulo: "&7Preparate..."
-  cuenta-regresiva: "&e{segundos}"
-  eliminado-titulo: "&c&lELIMINADO"
-  eliminado-subtitulo: "&7Mejor suerte la proxima vez"
-  ganador-titulo: "&6&lGANADOR"
-  ganador-subtitulo: "&e{jugador}"
+  glass-bridge:
+    duration: 120
+    columns: 18
+
+  marbles:
+    duration: 60
+    starting-marbles: 10
+    max-guesses: 5
+
+  musical-chairs:
+    duration: 120
+    music-duration-min: 5
+    music-duration-max: 12
+
+  maze:
+    duration: 120
+    size: 20
+
+  hot-potato:
+    duration: 90
+    min-fuse: 5
+    max-fuse: 15
+
+  memory-blocks:
+    duration: 120
+    colors: 6
+
+  obstacle-course:
+    duration: 120
+    length: 50
+
+  falling-platforms:
+    duration: 90
+    levels: 4
+    fall-interval: 3         # seconds between platform removals
+
+  guess-number:
+    duration: 60
+    max: 100
+    max-attempts: 7
+
+  hide-seek:
+    duration: 90
+    hide-time: 10            # seconds for hiders to hide
+
+  king-hill:
+    duration: 120
+    points-to-win: 30
+
+  russian-roulette:
+    duration: 120
+    death-chance: 1          # 1 in X chance of death
+
+  dalgona:
+    duration: 120
+    shape: circle            # circle, triangle, star, umbrella
+
+  tug-of-war:
+    duration: 60
+    win-distance: 10
